@@ -162,4 +162,4 @@ cython_debug/
 #.idea/
 
 # Configs
-config.json
+SPG/instance/config.json
