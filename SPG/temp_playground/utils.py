@@ -74,18 +74,22 @@ class Spotify:
     def _get_tracks_from_playlists(self, playlists, unique):
         track_ls = []
         playlists_ls = self.playlists_name_ if playlists is None else playlists
+        
         for playlist in self.playlists_detail:
             name = playlist['name']
+            is_public = 1 if playlist['public'] else 0  # Check if the playlist is public
+            
             if name not in playlists_ls:
                 continue
+            
             results = self.client_.playlist(playlist['id'], fields="tracks,next")
             tracks = results['tracks']
 
             for i, item in enumerate(tracks['items']):
-                track_ls.append((name, item['track']['id'], item['track']['name']))
+                track_ls.append((name, item['track']['id'], item['track']['name'], is_public))  # Include `is_public`
         
-        tracks_df = pd.DataFrame(track_ls, columns=['playlist', 'id', 'name']).drop_duplicates() \
-                   if unique else pd.DataFrame(track_ls, columns=['playlist', 'id', 'name'])
+        tracks_df = pd.DataFrame(track_ls, columns=['playlist', 'id', 'name', 'public']).drop_duplicates() \
+                if unique else spd.DataFrame(track_ls, columns=['playlist', 'id', 'name', 'public'])
         return tracks_df
     
     
@@ -118,17 +122,16 @@ class Spotify:
             - Creates df_ attribute
         ------------------------------------------------------------------------------------------
         """
-        # self.username = username
-        
-        # self.get_playlist(username, limit)
-        
         self.playlists_df_ = self._get_tracks_from_playlists(playlists, unique)
         song_ids = self.playlists_df_.id.astype(str)
         features_df = self._get_audio_features_from_tracks(song_ids, unique)
         self.songs_df_ = pd.merge(self.playlists_df_, features_df, how='left', left_on='id', right_on='id')
-        
+
     
-    def get_df(self) -> pd.DataFrame:
+    def get_playlist_df(self):
+        return self.playlists_df_[['playlist', 'id','']]
+
+    def get_tracks_df(self) -> pd.DataFrame:
         cols = ['name'] + FEATURES
         return self.songs_df_[cols].copy()
     

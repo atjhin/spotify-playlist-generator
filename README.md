@@ -16,6 +16,10 @@ Spotify Playlist Generator is a Python-based application that helps you organize
 
 - TBD
 
+# Architecture
+
+- (Lucid chart)[https://lucid.app/lucidchart/35b02c8a-edaa-4a63-af6a-fcfbedf44bd4/edit?viewport_loc=-3360%2C-238%2C3146%2C1532%2C0_0&invitationId=inv_09674fe3-dd9a-4f4c-a428-d240ea4a016c]
+
 ## Usage Instructions
 
 - TBD
