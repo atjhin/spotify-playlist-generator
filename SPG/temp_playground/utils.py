@@ -1,4 +1,5 @@
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials,SpotifyOAuth
+# from spotipy.oauth2 import 
 import spotipy 
 import pandas as pd
 
@@ -10,13 +11,6 @@ FEATURES = [
 
 # ------------------------------------------- Spotify -----------------------------------------
 
-from spotipy.oauth2 import SpotifyClientCredentials,SpotifyOAuth
-# from spotipy.oauth2 import 
-import spotipy 
-import pandas as pd
-FEATURES = [
-    'danceability', 'energy', 'acousticness', 'instrumentalness', 'valence', 'loudness', 'tempo',
-]
 class Spotify:
     """
     ---------------------------------------------------------------------------------------------
@@ -35,11 +29,12 @@ class Spotify:
         - get_tracks_from_playlists: Extract tracks and audio features from user playlists
     ---------------------------------------------------------------------------------------------
     """
-    def __init__(self, client_id, client_secret, redirect_uri, scope = "playlist-read-private playlist-read-collaborative playlist-modify-public"):
+    def __init__(self, client_id=None, client_secret=None, redirect_uri=None, auth_token=None, scope = "playlist-read-private playlist-read-collaborative playlist-modify-public"):
         self.client_id=client_id
         self.client_secret=client_secret
         self.redirect_uri = redirect_uri
         self.scope = scope
+        self.auth_token=auth_token
         
         
     
@@ -49,15 +44,18 @@ class Spotify:
         
         # client = spotipy.Spotify(client_credentials_manager=client_creds)
         # client_creds = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret, redirect_uri=SPOTIFY_REDIRECT_URI)
-        client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.client_id,
-                                               client_secret=self.client_secret,
-                                               redirect_uri=self.redirect_uri,
-                                               scope=self.scope))
+        if self.auth_token is not None:
+            client =  spotipy.Spotify(auth=self.auth_token)
+        else:
+            client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.client_id,
+                                                client_secret=self.client_secret,
+                                                redirect_uri=self.redirect_uri,
+                                                scope=self.scope))
         self.client_ = client
 
 
         
-    def get_playlist(self) -> pd.DataFrame:
+    def get_playlist(self) -> list:
         playlists = []
         offset = 0
         while True:
@@ -67,9 +65,10 @@ class Spotify:
                 offset += len(response['items'])
             else:
                 break
+        playlists = [playlist for playlist in playlists if playlist is not None]
         self.playlists_detail = playlists
         self.playlists_name_ = [playlist['name'] for playlist in playlists]
-        return pd.DataFrame(playlists)
+        return playlists
     
     def _get_tracks_from_playlists(self, playlists, unique):
         track_ls = []
@@ -89,7 +88,7 @@ class Spotify:
                 track_ls.append((name, item['track']['id'], item['track']['name'], is_public))  # Include `is_public`
         
         tracks_df = pd.DataFrame(track_ls, columns=['playlist', 'id', 'name', 'public']).drop_duplicates() \
-                if unique else spd.DataFrame(track_ls, columns=['playlist', 'id', 'name', 'public'])
+                if unique else pd.DataFrame(track_ls, columns=['playlist', 'id', 'name', 'public'])
         return tracks_df
     
     
@@ -122,16 +121,17 @@ class Spotify:
             - Creates df_ attribute
         ------------------------------------------------------------------------------------------
         """
+        # self.username = username
+        
+        # self.get_playlist(username, limit)
+        
         self.playlists_df_ = self._get_tracks_from_playlists(playlists, unique)
         song_ids = self.playlists_df_.id.astype(str)
         features_df = self._get_audio_features_from_tracks(song_ids, unique)
         self.songs_df_ = pd.merge(self.playlists_df_, features_df, how='left', left_on='id', right_on='id')
 
     
-    def get_playlist_df(self):
-        return self.playlists_df_[['playlist', 'id','']]
-
-    def get_tracks_df(self) -> pd.DataFrame:
+    def get_df(self) -> pd.DataFrame:
         cols = ['name'] + FEATURES
         return self.songs_df_[cols].copy()
     

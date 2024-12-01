@@ -3,7 +3,10 @@
 
             <div class = "coursename"> <h2>Login to your Spotify Account</h2> </div>
 
-            <button><h3>Click to Login</h3> </button>
+            <form method="POST" action="{{ url_for('main.login') }}">
+                <button><h3>Click to Login</h3> </button>
+            </form>
+            <!-- a href="{{ url_for('main.login') }}" -->
 
 {% endblock content %}
 

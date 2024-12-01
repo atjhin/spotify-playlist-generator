@@ -15,7 +15,13 @@
             <div><a href="{{ url_for('main.generate') }}">Generate</a></div>
             <div><a href="{{ url_for('main.logout') }}">Log Out</a></div>
         {% else %}
-            <div class="{% if pagename == 'login' %}current{% endif %}"><a href="{{ url_for('main.login') }}">Log In</a></div>
+            <div class="{% if pagename == 'login' %}current{% endif %}">
+                <a href="{{ url_for('main.login') }}">
+                    <button>
+                        Log In with Spotify
+                    </button>
+                </a>
+            </div>
         {% endif %}
     </div>
     <br>

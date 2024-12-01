@@ -2,9 +2,29 @@
 {% block content %}
 
             <div class = "coursename"> <h2>Welcome to SPG: Spotify Playlist Generator</h2> </div>
+            
+            {% if playlists %}
+            <div class="playlist-container">
+                <h3>Your Playlists:</h3>
+                <ul>
+                    {% for playlist in playlists %}
+                        <li>
+                            <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
+                                {{ playlist['name'] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p>No playlists found!</p>
+        {% endif %}
 
             <button><h3>Click to Login</h3> </button>
-
+            
+            <a href="{{ url_for('main.logout') }}" class="logout-btn">
+                <button>Logout</button>
+            </a>
 {% endblock content %}
 
 

@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+
+
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -11,8 +13,11 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('../instance/config.py')  # Load configuration
 
-    # Initialize SQLAlchemy with the app
+    # Initialize the database
     db.init_app(app)
+
+    
+
 
     # Import models so they are registered with SQLAlchemy
     from app import database
