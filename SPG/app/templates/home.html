@@ -3,11 +3,11 @@
 
             <div class = "coursename"> <h2>Welcome to SPG: Spotify Playlist Generator</h2> </div>
             
-            {% if playlists %}
+            {% if session.playlists %}
             <div class="playlist-container">
                 <h3>Your Playlists:</h3>
                 <ul>
-                    {% for playlist in playlists %}
+                    {% for playlist in session.playlists %}
                         <li>
                             <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
                                 {{ playlist['name'] }}
@@ -20,7 +20,10 @@
             <p>No playlists found!</p>
         {% endif %}
 
-            <button><h3>Click to Login</h3> </button>
+            <!-- <button><h3>Click to Login</h3> </button> -->
+            <form method="POST" action="{{ url_for('main.login') }}">
+                <button><h3>Click to Login</h3> </button>
+            </form>
             
             <a href="{{ url_for('main.logout') }}" class="logout-btn">
                 <button>Logout</button>

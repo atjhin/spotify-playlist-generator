@@ -16,9 +16,6 @@ def create_app():
     # Initialize the database
     db.init_app(app)
 
-    
-
-
     # Import models so they are registered with SQLAlchemy
     from app import database
 

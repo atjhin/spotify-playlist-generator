@@ -2,6 +2,7 @@ from spotipy.oauth2 import SpotifyClientCredentials,SpotifyOAuth
 # from spotipy.oauth2 import 
 import spotipy 
 import pandas as pd
+import logging
 
 # -------------------------------------- GLOBAL VARIABLES -------------------------------------
 
@@ -38,19 +39,25 @@ class Spotify:
         
         
     
-    def connect(self):
+    def connect(self, auth):
         # client_creds = SpotifyClientCredentials(client_id=self.client_id, 
         #                                         client_secret=self.client_secret)
         
         # client = spotipy.Spotify(client_credentials_manager=client_creds)
         # client_creds = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret, redirect_uri=SPOTIFY_REDIRECT_URI)
-        if self.auth_token is not None:
-            client =  spotipy.Spotify(auth=self.auth_token)
-        else:
-            client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.client_id,
-                                                client_secret=self.client_secret,
-                                                redirect_uri=self.redirect_uri,
-                                                scope=self.scope))
+        # if self.auth_token is not None:
+        #     client =  spotipy.Spotify(auth=self.auth_token)
+        #     logging.warning('Auth successfull')
+        #     print('Auth successfull\n\n')
+        # else:
+        # #     client = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.client_id,
+        # #                                         client_secret=self.client_secret,
+        # #                                         redirect_uri=self.redirect_uri,
+        # #                                         scope=self.scope))
+        #     logging.warning('Auth token is missing')
+        #     print('Auth token is missing\n\n')
+        #     # raise Exception("Auth token is missing")
+        client = spotipy.Spotify(auth_manager=auth)
         self.client_ = client
 
 
