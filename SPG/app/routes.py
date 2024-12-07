@@ -101,7 +101,30 @@ def home():
     return render_template('home.html')
 
 
-@main_blueprint.route('/generate')
+@main_blueprint.route('/generate', methods=['GET', 'POST'])
 def generate():
-    # Render the generate page
+    if request.method == 'POST':
+        # Handle the form submission
+        selected_playlists = request.form.getlist('selected_playlists')
+        session['selected_playlists'] = selected_playlists
+        
+        # Process special request data
+        playlist_name = request.form.get('playlist_name')
+        range_songs = request.form.get('range_songs')
+        creativity = request.form.get('creativity')
+        special_requests = request.form.get('special_requests')
+        
+        # Store these in the session or use them as needed for playlist generation
+        session['playlist_name'] = playlist_name
+        session['range_songs'] = range_songs
+        session['creativity'] = creativity
+        session['special_requests'] = special_requests
+
+        print(session['playlist_name'] + "\n"+ session['range_songs'] +"\n"+ session['creativity'] +"\n"+ session['special_requests'])
+        
+        # You can now use these session variables to generate the playlist or whatever processing is needed
+        # For example, you might generate a playlist based on the selected playlists and special requests
+        
+        return redirect(url_for('main.generate'))  # Redirect to reload the page or show the result
+    
     return render_template('generate.html')

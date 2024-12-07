@@ -1,33 +1,37 @@
 {% extends "template.html" %}
 {% block content %}
-
-            <div class = "coursename"> <h2>Welcome to SPG: Spotify Playlist Generator</h2> </div>
             
-            {% if session.playlists %}
-            <div class="playlist-container">
-                <h3>Your Playlists:</h3>
-                <ul>
-                    {% for playlist in session.playlists %}
-                        <li>
-                            <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
-                                {{ playlist['name'] }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            <p>No playlists found!</p>
-        {% endif %}
-
-            <!-- <button><h3>Click to Login</h3> </button> -->
-            <form method="POST" action="{{ url_for('main.login') }}">
-                <button><h3>Click to Login</h3> </button>
-            </form>
+    <!-- Welcome Section -->
+    <div class="title1">
+        <h2>Welcome to SPG: Spotify Playlist Generator</h2>
+    </div>
             
-            <a href="{{ url_for('main.logout') }}" class="logout-btn">
-                <button>Logout</button>
-            </a>
+    <!-- Playlists Section -->
+    {% if session.playlists %}
+        <div class="playlist-container">
+            <h3>Your Playlists:</h3>
+            <ul>
+                {% for playlist in session.playlists %}
+                    <li>
+                        <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
+                            {{ playlist['name'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>No playlists found!</p>
+    {% endif %}
+
+    <!-- Login Section -->
+    <form method="POST" action="{{ url_for('main.login') }}">
+        <button><h3>Click to Login</h3></button>
+    </form>
+            
+    <!-- Logout Section -->
+    <a href="{{ url_for('main.logout') }}" class="logout-btn">
+        <button>Logout</button>
+    </a>
+            
 {% endblock content %}
-
-

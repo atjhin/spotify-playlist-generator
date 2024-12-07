@@ -1,10 +1,63 @@
 {% extends "template.html" %}
 {% block content %}
+    <form id="generate-form" method="POST" action="{{ url_for('main.generate') }}">
+        <div>
+            {% if session.playlists %}
+                <div class="playlist-container">
+                    <h3>Your Playlists:</h3>
+                    <ul>
+                        {% for playlist in session.playlists %}
+                            <li>
+                                <input type="checkbox" name="selected_playlists" value="{{ playlist['id'] }}" id="playlist_{{ playlist['id'] }}">
+                                <label for="playlist_{{ playlist['id'] }}">
+                                    <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
+                                        {{ playlist['name'] }}
+                                    </a>
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Select All Button -->
+                <div class="select-all-container">
+                    <button type="button" onclick="selectAllPlaylists()">Select All</button>
+                </div>
+            {% else %}
+                <p>No playlists found!</p>
+            {% endif %}
+            
+            <br><br>
+            
+            <!-- Special Requests Section -->
+            <h3>Enter Your Special Requests</h3>
+            <label for="playlist_name">Playlist Name:</label>
+            <input type="text" id="playlist_name" name="playlist_name" placeholder="Night Drive Playlist" class="input-styles">
+            <br><br>
+            <label for="range_songs">Range of Songs:</label>
+            <input type="text" id="range_songs" name="range_songs" min="5" max="80" placeholder="20-30" class="input-styles">
+            <br><br>
+            <label for="creativity">Creativity (1-10):</label>
+            <input type="text" id="creativity" name="creativity" min="1" max="10" placeholder="2" class="input-styles">
+            <br><br>
+            <label for="special_requests">Special Requests:</label>
+            <input type="text" id="special_requests" name="special_requests" placeholder="laufey related songs" class="input-styles">
+            <br><br>
 
-            <div class = "coursename"> <h2>Generate your Playlist here</h2> </div>
+            <!-- Submit Button -->
+            <button type="submit" name="step" value="2">Generate</button>
+        </div>
+    </form>
 
-            <button><h3>Click to Generate Playlist</h3> </button>
+    <script>
+        function selectAllPlaylists() {
+            // Get all the checkboxes
+            var checkboxes = document.querySelectorAll('input[name="selected_playlists"]');
+            var allSelected = Array.from(checkboxes).every(checkbox => checkbox.checked);
 
+            // If all are checked, uncheck them, otherwise check them all
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = !allSelected;
+            });
+        }
+    </script>
 {% endblock content %}
-
-

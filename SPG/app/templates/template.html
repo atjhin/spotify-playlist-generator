@@ -6,29 +6,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <div class="nav">
-        <div class="title" style="font-size: 30px;"><strong>Welcome to CSCB20</strong></div>
-        {% if session.get('name') %}
+        <div class="title1" style="font-size: 30px;"><strong>Welcome to SPG</strong></div>
+
+        <!-- Check if user is logged in -->
+        {% if session.get('token_info') %}
             <div><a href="{{ url_for('main.home') }}">Home</a></div>
-            <!-- Uncomment if you add a notes page -->
-            <!-- <div><a href="{{ url_for('main.notes') }}">Notes</a></div> -->
             <div><a href="{{ url_for('main.generate') }}">Generate</a></div>
             <div><a href="{{ url_for('main.logout') }}">Log Out</a></div>
         {% else %}
-            <div class="{% if pagename == 'login' %}current{% endif %}">
-                <a href="{{ url_for('main.login') }}">
-                    <button>
-                        Log In with Spotify
-                    </button>
-                </a>
-            </div>
+            <div><a href="{{ url_for('main.login') }}">Login</a></div>
+            <div><a href="{{ url_for('main.home') }}">Home</a></div>
+            <div><a href="{{ url_for('main.generate') }}">Generate</a></div>
+            <div><a href="{{ url_for('main.logout') }}">Log Out</a></div>
         {% endif %}
     </div>
+
+    <!-- Main Content Area -->
     <br>
     <div class="main">
         {% block content %}
         {% endblock %}
     </div>
+
+    <!-- Footer Section -->
     <div class="footer">
         <div><span>Site design by Tjhin</span></div>
         <div><a href="https://github.com/atjhin/spotify-playlist-generator" target="_blank">See Github Code Here</a></div>
