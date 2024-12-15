@@ -76,8 +76,6 @@ def logout():
     cache_path = sp_oauth.cache_handler.cache_path
     if os.path.exists(cache_path):
         os.remove(cache_path)
-    # flash('You have been logged out.', 'info')  # Flash a message
-    # return redirect(url_for('main.login'))  # Redirect to the login page
     session.clear()  # Clears session on logout
     flash('You have been logged out!', 'info')
     return redirect(url_for('main.home'))
@@ -87,11 +85,7 @@ def logout():
 def home():
     # Render the home page (which will now show playlists)
     if 'token_info' not in session:
-        # print('here\n\n')
-        # return redirect(url_for('main.login'))
         playlists = None
-        # return redirect(url_for('main'))
-        # return redirect(url_for('main.login'))
     else:
         token_info = session['token_info']
         sp = Spotify(auth_token=token_info['access_token'])
@@ -120,7 +114,7 @@ def generate():
         session['creativity'] = creativity
         session['special_requests'] = special_requests
 
-        print(session['playlist_name'] + "\n"+ session['range_songs'] +"\n"+ session['creativity'] +"\n"+ session['special_requests'])
+        # print(session['playlist_name'] + "\n"+ session['range_songs'] +"\n"+ session['creativity'] +"\n"+ session['special_requests'])
         
         # You can now use these session variables to generate the playlist or whatever processing is needed
         # For example, you might generate a playlist based on the selected playlists and special requests
