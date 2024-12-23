@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>{% block title %}SPG{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -13,13 +14,10 @@
         <!-- Check if user is logged in -->
         {% if session.get('token_info') %}
             <div><a href="{{ url_for('main.home') }}">Home</a></div>
-            <div><a href="{{ url_for('main.generate') }}">Generate</a></div>
-            <div><a href="{{ url_for('main.logout') }}">Log Out</a></div>
+            <div><a href="{{ url_for('main.logout') }}">Logout</a></div>
         {% else %}
-            <div><a href="{{ url_for('main.login') }}">Login</a></div>
             <div><a href="{{ url_for('main.home') }}">Home</a></div>
-            <div><a href="{{ url_for('main.generate') }}">Generate</a></div>
-            <div><a href="{{ url_for('main.logout') }}">Log Out</a></div>
+            <div><a href="{{ url_for('main.login') }}">Login</a></div>
         {% endif %}
     </div>
 

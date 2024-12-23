@@ -81,9 +81,9 @@ def logout():
     return redirect(url_for('main.home'))
 
 
-@main_blueprint.route('/home')
+@main_blueprint.route('/home', methods=['GET', 'POST'])
 def home():
-    # Render the home page (which will now show playlists)
+    # Render the home page and handle playlist selection form submission
     if 'token_info' not in session:
         playlists = None
     else:
@@ -91,16 +91,23 @@ def home():
         sp = Spotify(auth_token=token_info['access_token'])
         sp.connect(sp_oauth)
         playlists = sp.get_playlist()
-    session['playlists'] = playlists
-    return render_template('home.html')
+    
+    session['playlists'] = playlists  # Store playlists in session
+    
+    if request.method == 'POST':
+        # Handle form submission
+        selected_playlists = request.form.getlist('selected_playlists')
+        session['selected_playlists'] = selected_playlists  # Store selected playlists in session
+        
+        # Redirect to the next step
+        return redirect(url_for('main.generate'))
+    
+    return render_template('home.html', playlists=playlists)
 
 
 @main_blueprint.route('/generate', methods=['GET', 'POST'])
 def generate():
     if request.method == 'POST':
-        # Handle the form submission
-        selected_playlists = request.form.getlist('selected_playlists')
-        session['selected_playlists'] = selected_playlists
         
         # Process special request data
         playlist_name = request.form.get('playlist_name')

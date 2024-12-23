@@ -1,37 +1,45 @@
 {% extends "template.html" %}
 {% block content %}
-            
-    <!-- Welcome Section -->
-    <div class="title1">
-        <h2>Welcome to SPG: Spotify Playlist Generator</h2>
-    </div>
-            
+
+<!-- Welcome Section -->
+<div class="title1">
+    <h2>Welcome to SPG: Spotify Playlist Generator</h2>
+</div>
+
+<!-- Form Section -->
+<form method="POST" action="{{ url_for('main.generate') }}" id="playlist-form">
+    
     <!-- Playlists Section -->
     {% if session.playlists %}
+        <!-- Select All Button -->
+        <div>
+            <button type="button" id="select-all" class="button">Select All</button>
+        </div>
+        
         <div class="playlist-container">
+            <h2> Please select your playlists </h2>
             <h3>Your Playlists:</h3>
-            <ul>
+            <div class="grid-container">
                 {% for playlist in session.playlists %}
-                    <li>
-                        <a href="{{ playlist['external_urls']['spotify'] }}" target="_blank">
-                            {{ playlist['name'] }}
-                        </a>
-                    </li>
+                <div class="playlist-card" data-playlist-id="{{ playlist['id'] }}">
+                    <input type="checkbox" name="selected_playlists" value="{{ playlist['id'] }}" id="playlist-{{ playlist['id'] }}" class="checkbox">
+                    <label for="playlist-{{ playlist['id'] }}">
+                        <img src="{{ url_for('static', filename='spotify.png') }}" class="playlist-image">
+                        <div class="playlist-title">{{ playlist['name'] }}</div>
+                    </label>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="form-actions">
+            <button type="submit" class="button">Next</button>
         </div>
     {% else %}
         <p>No playlists found!</p>
     {% endif %}
+</form>
 
-    <!-- Login Section -->
-    <form method="POST" action="{{ url_for('main.login') }}">
-        <button><h3>Click to Login</h3></button>
-    </form>
-            
-    <!-- Logout Section -->
-    <a href="{{ url_for('main.logout') }}" class="logout-btn">
-        <button>Logout</button>
-    </a>
-            
+
 {% endblock content %}
