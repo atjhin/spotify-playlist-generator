@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% block content %}
+    <form method="POST" action="{{ url_for('main.add') }}" id="generated-playlist-form">
+        
+        <!-- Playlists Section -->
+        {% if session.playlists %}
+            <!-- Select All Button -->
+            <div>
+                <button type="button" id="select-all" class="button">Select All</button>
+            </div>
+            
+            <div class="playlist-container">
+                <h2> Select which songs you would like to add </h2>
+                <h3>Your songs:</h3>
+                <div class="grid-container">
+                    {% for playlist in session.playlists %}
+                    <div class="playlist-card" 
+                        data-playlist-id="{{ playlist['id'] }}" 
+                        data-public="{{ 'true' if playlist['public'] else 'false' }}">
+                        <input type="checkbox" name="selected_playlists" value="{{ playlist['id'] }}" id="playlist-{{ playlist['id'] }}" class="checkbox">
+                        <label for="playlist-{{ playlist['id'] }}">
+                            <img src="{{ playlist['images'][0]['url'] }}" alt="Playlist Image" class="playlist-image">
+                            <div class="playlist-title">{{ playlist['name'] }}</div>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Next Button -->
+            <div class="form-actions">
+                <button type="submit" class="button">Next</button>
+            </div>
+        {% else %}
+            <p>No playlists found!</p>
+        {% endif %}
+    </form>
+
+{% endblock content %}
