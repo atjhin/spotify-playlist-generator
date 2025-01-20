@@ -1,28 +1,62 @@
 {% extends "template.html" %}
 {% block content %}
-    <form id="generate-form" method="POST" action="{{ url_for('main.generate') }}">
-        <div>
-            <!-- Special Requests Section -->
-            <h3>Enter Your Special Requests</h3>
+<form id="generate-form" method="POST" action="{{ url_for('main.generate') }}">
+    <div>
+        <!-- Special Requests Section -->
+        <h3>Enter Your Special Requests</h3>
+        <div class="input-container">
             <label for="playlist_name">Playlist Name:</label>
             <input type="text" id="playlist_name" name="playlist_name" placeholder="Night Drive Playlist" class="input-styles">
-            <br><br>
-            <label for="min_songs">Minimum number of Songs:</label>
-            <input type="text" id="min_songs" name="min_songs" min="5" max="80" placeholder="20-30" class="input-styles">
-            <br><br>
-            <label for="max_songs">Maximum number of Songs:</label>
-            <input type="text" id="max_songs" name="max_songs" min="5" max="80" placeholder="20-30" class="input-styles">
-            <br><br>
-            <label for="creativity">Creativity (1-10):</label>
-            <input type="text" id="creativity" name="creativity" min="1" max="10" placeholder="2" class="input-styles">
-            <br><br>
-            <label for="special_requests">Special Requests:</label>
-            <input type="text" id="special_requests" name="special_requests" placeholder="laufey related songs" class="input-styles">
-            <br><br>
-
-            <!-- Submit Button -->
-            <button type="submit" name="step" value="2">Generate</button>
         </div>
-    </form>
+        <br><br>
+        <label for="min_songs">Minimum number of Songs:</label>
+        <input type="text" id="min_songs" name="min_songs" min="5" max="80" placeholder="20" class="input-styles">
+        <br><br>
+        <label for="max_songs">Maximum number of Songs:</label>
+        <input type="text" id="max_songs" name="max_songs" min="5" max="80" placeholder="30" class="input-styles">
+        <br><br>
+        <label for="creativity">Creativity (1-10):</label>
+        <input type="text" id="creativity" name="creativity" min="1" max="10" placeholder="2" class="input-styles">
+        <br><br>
+        <label for="special_requests">Special Requests:</label>
+        <input type="text" id="special_requests" name="special_requests" placeholder="Chill songs with less lyrics" class="input-styles">
+        <br><br>
 
+        <!-- Submit Button -->
+        <button type="submit" name="step" value="2">Generate</button>
+    </div>
+</form>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const playlistNameInput = document.getElementById('playlist_name');
+        const playlistName = playlistNameInput.value.trim();
+        
+        if (!playlistName) {
+            event.preventDefault();
+            // Make the input box red with !important to override existing styles
+            playlistNameInput.style.setProperty('border-color', 'red', 'important');
+            
+            // Display a message beside the input box
+            let errorMessage = document.getElementById('playlist_name_error');
+            if (!errorMessage) {
+                errorMessage = document.createElement('span');
+                errorMessage.id = 'playlist_name_error';
+                errorMessage.style.color = 'red';
+                errorMessage.style.marginLeft = '10px'; // Adds space between input and error message
+                errorMessage.textContent = 'Playlist name cannot be empty.';
+                playlistNameInput.parentElement.appendChild(errorMessage);
+            }
+        } else {
+            // Reset the border color if the input is valid
+            playlistNameInput.style.setProperty('border-color', '', 'important');
+            const errorMessage = document.getElementById('playlist_name_error');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+    });
+</script>
+
+    
 {% endblock content %}

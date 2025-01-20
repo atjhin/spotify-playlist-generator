@@ -180,6 +180,15 @@ body {
 }
 
 
+.playlist-filter {
+  padding: 10px 20px;
+  background-color: rgb(41, 41, 44);
+  color: #00FF47;
+  border: 2px solid #00FF47;
+  cursor: pointer;
+  display: block;
+}
+
 
 button {
   padding: 10px 20px;
@@ -207,6 +216,19 @@ form {
   border: none;
   padding: 5px;
   border-radius: 4px;
+}
+
+/* .input-container {
+  display: flex;
+  align-items: center;
+}
+.input-container input {
+  flex: 1;
+} */
+.input-container span {
+  display: inline-block;
+  color: red;
+  margin-left: 10px; /* Space between the input and error message */
 }
 
 /* Footer Section */

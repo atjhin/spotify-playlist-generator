@@ -292,12 +292,10 @@ class GeminiPlaylistCurator:
 
 
   def ask_gemini(self, df, playlist_name, creativity, min_tracks, max_tracks, special_request=None, max_rows=10, random_state=2024):
-    # prompt = self.get_prompt(df, playlist_name, creativity, min_tracks, max_tracks, special_request)
     df = self.shuffle_df(df,max_rows,random_state)
+    special_request = "None" if special_request is None else special_request
     self.check_params(playlist_name, creativity, min_tracks, max_tracks, special_request)
     prompt = self.get_chatgpt_generated_prompt(df, playlist_name, creativity, min_tracks, max_tracks, special_request)
     response = self.chat.send_message(prompt)
-    # print(f"{response.text[:50]}...{response.text[-30:]}")
-    # songs = [song.strip() for song in response.text.split("\t")]
     songs = re.findall(r'"([^"]*)"', response.text)
     return songs, response

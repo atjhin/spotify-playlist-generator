@@ -10,11 +10,11 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')  # Default to SQLite for local use
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-PERMANENT_SESSION_LIFETIME = timedelta(minutes=20)
+PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
 
 # Spotify
 SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
 SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
-SPOTIFY_SCOPE = "user-library-read playlist-read-private playlist-read-collaborative"
+SPOTIFY_SCOPE = "user-library-read playlist-read-private playlist-read-collaborative playlist-modify-public"
 GOOGLE_API_KEY= os.getenv("GOOGLE_API_KEY")

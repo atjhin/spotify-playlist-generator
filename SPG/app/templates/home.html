@@ -10,11 +10,11 @@
 <form method="POST" action="{{ url_for('main.home') }}" id="playlist-form">
     
     <!-- Playlists Section -->
-    {% if session.playlists %}
+    {% if playlists %}
         <!-- Filter Section -->
         <div class="filter-section">
             <label for="playlist-filter">Filter Playlists:</label>
-            <select id="playlist-filter" name="playlist_filter" onchange="filterPlaylists()">
+            <select id="playlist-filter" name="playlist_filter" class="playlist-filter" onchange="filterPlaylists()">
                 <option value="all">All</option>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
@@ -30,7 +30,7 @@
             <h2> Please select your playlists </h2>
             <h3>Your Playlists:</h3>
             <div class="grid-container">
-                {% for playlist in session.playlists %}
+                {% for playlist in playlists %}
                 <div class="playlist-card" 
                      data-playlist-id="{{ playlist['id'] }}" 
                      data-public="{{ 'true' if playlist['public'] else 'false' }}">
@@ -49,7 +49,7 @@
             <button type="submit" class="button">Next</button>
         </div>
     {% else %}
-        <p>No playlists found!</p>
+        <p>Please log in to Spotify to extract songs from your playlists.</p>
     {% endif %}
 </form>
 

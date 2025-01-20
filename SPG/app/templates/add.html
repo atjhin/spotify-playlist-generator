@@ -1,26 +1,26 @@
 {% extends "template.html" %}
 {% block content %}
-    <form method="POST" action="{{ url_for('main.add') }}" id="generated-playlist-form">
+    <form method="POST" action="{{ url_for('main.add') }}" id="playlist-form">
         
         <!-- Playlists Section -->
-        {% if session.playlists %}
+        {% if songs_list %}
             <!-- Select All Button -->
             <div>
                 <button type="button" id="select-all" class="button">Select All</button>
             </div>
             
             <div class="playlist-container">
-                <h2> Select which songs you would like to add </h2>
-                <h3>Your songs:</h3>
+                <label for="playlist_name">Playlist Name:</label>
+                <input type="text" id="playlist_name" name="playlist_name" value="{{ playlist_name }}" class="input-styles">
+                <br><br>
+                <h2> Songs: </h2>
                 <div class="grid-container">
-                    {% for playlist in session.playlists %}
-                    <div class="playlist-card" 
-                        data-playlist-id="{{ playlist['id'] }}" 
-                        data-public="{{ 'true' if playlist['public'] else 'false' }}">
-                        <input type="checkbox" name="selected_playlists" value="{{ playlist['id'] }}" id="playlist-{{ playlist['id'] }}" class="checkbox">
-                        <label for="playlist-{{ playlist['id'] }}">
-                            <img src="{{ playlist['images'][0]['url'] }}" alt="Playlist Image" class="playlist-image">
-                            <div class="playlist-title">{{ playlist['name'] }}</div>
+                    {% for song in songs_list %}
+                    <div class="playlist-card" data-playlist-id="{{ songs_list }}">
+                        <input type="checkbox" name="selected_songs" value="{{ songs_list }}" id="song-{{ songs_list }}" class="checkbox">
+                        <label for="playlist-{{ songs_list }}">c
+                            <img src="spotify.png" alt="Playlist Image" class="playlist-image">
+                            <div class="playlist-title">{{ song }}</div>
                         </label>
                     </div>
                     {% endfor %}
@@ -29,10 +29,10 @@
 
             <!-- Next Button -->
             <div class="form-actions">
-                <button type="submit" class="button">Next</button>
+                <button type="submit" class="button">Add to Spotify</button>
             </div>
         {% else %}
-            <p>No playlists found!</p>
+            <p>No songs generated!</p>
         {% endif %}
     </form>
 

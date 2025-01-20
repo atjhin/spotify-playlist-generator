@@ -1,10 +1,10 @@
 from app import create_app, db
+from flask_migrate import Migrate
 
 app = create_app()
-
+migrate = Migrate(app, db)
 if __name__ == '__main__':
-    # Automatically create all tables when the app starts
     with app.app_context():
-        db.create_all()
-        
+        db.create_all()  # This will create the tables defined in your models
     app.run(debug=True)
+

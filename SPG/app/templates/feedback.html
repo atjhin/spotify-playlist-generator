@@ -1,0 +1,9 @@
+{% extends "template.html" %}
+{% block content %}
+<h1> Playlist added</h1>
+<div> 
+    Your playlist has been added to your spotify account, it may take a few minutes 
+    for the playlist to show up in your profile. 
+</div>
+<a href="{{ url_for('main.home') }}" class="button">Create another playlist</a>
+{% endblock content %}
