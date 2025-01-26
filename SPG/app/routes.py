@@ -80,7 +80,9 @@ def clear_session_data(session_id):
 
 @main_blueprint.route('/')
 def index():
-    return render_template('home.html', playlists=[])
+    token_info = get_session_data(SESSION_ID, "token_info")
+    logged_in = token_info is not None
+    return render_template('home.html', playlists=[], logged_in=logged_in)
 
 @main_blueprint.route('/login', methods=['GET'])
 def login():
@@ -103,14 +105,17 @@ def callback():
 
 @main_blueprint.route('/logout')
 def logout():
-    clear_session_data(SESSION_ID)  # Clear session data from the database
+    clear_session_data(SESSION_ID)  
     flash('You have been logged out!', 'info')
-    return redirect(url_for('main.home'))
+    logged_in = False
+    return render_template('home.html', playlists=[], logged_in=logged_in)
+
 
 @main_blueprint.route('/home', methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
         token_info = get_session_data(SESSION_ID, "token_info")
+        logged_in = token_info is not None
         playlists = []
         if token_info:
             try:
@@ -132,7 +137,7 @@ def home():
 
     playlists = get_session_data(SESSION_ID, "playlists")
     print(f"playlist from session: {playlists[:5]}")
-    return render_template('home.html', playlists=playlists)
+    return render_template('home.html', playlists=playlists, logged_in=logged_in)
 
 @main_blueprint.route('/generate', methods=['GET', 'POST'])
 def generate():

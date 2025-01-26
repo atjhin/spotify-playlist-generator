@@ -1,2 +1,4 @@
 .env
 .cache
+./instance/config.json
+./temp_playground/playground_2.ipynb

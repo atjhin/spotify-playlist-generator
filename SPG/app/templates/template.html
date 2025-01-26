@@ -12,7 +12,7 @@
         <div class="title1" style="font-size: 30px;"><strong>Welcome to SPG</strong></div>
 
         <!-- Check if user is logged in -->
-        {% if session.get('token_info') %}
+        {% if logged_in %}
             <div><a href="{{ url_for('main.home') }}">Home</a></div>
             <div><a href="{{ url_for('main.logout') }}">Logout</a></div>
         {% else %}
